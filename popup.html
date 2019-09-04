@@ -7,14 +7,14 @@
             <script src="./Chart.js"></script>
             <link href="style.css" rel="stylesheet">
             <meta charset="utf-8">
-    </head>
+<!--             <meat content="nonce-2726c7f26c">
+ -->    </head>
     <body class="body_content">
-            
-        <div id="app" >
+        <div class="app" id="app" >
         
                 
                 
-
+               
                 <table class="table" id="tableItems" cellspacing="0">
                     <thead >
                             
@@ -24,11 +24,12 @@
                             <th class="th">Price ($)</th>
                         </tr>
                     </thead>
-                    
-                    <tr class="rowItem" :id="item.id" v-on:click="toMoreInformation(item.id,item.id+'Canvas',item.name,item.symbol)" v-for="(item,index) in coinsData" v-if="itemCount>index" >
+                    <tr class="rowItem" :id="item.id" v-on:click="toMoreInformation(item)" v-for="(item,index) in coinsData" v-if="itemCount>index" >
+                       
                         <td class="idBit">{{index+1}} </td> 
                         <td class="BitName" id="trItem">
-                                <img class="icon" :src="'https://static.coincap.io/assets/icons/'+item.symbol.toLowerCase()+'@2x.png'"> {{item.name}} 
+                             <img :id="'icon-'+item.id" class="icon" :src="'https://static.coincap.io/assets/icons/'+item.symbol.toLowerCase()+'@2x.png'" > {{item.name}}
+                        
                         </td> 
                         
                         <td colspan="4" class="price"> $ {{(parseFloat(item.priceUsd).toFixed(nullabels)).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}}</td>
@@ -39,9 +40,12 @@
                     
                 </table>
                 <footer>
-                    <a class="load-more" id='load-more-id' v-on:click="addItems()">View More</a>
-                    <br><a target="_blank" href="https://coincap.io/" >coincap.io</a>
-                    
+                    <div class="load-more">
+                        <a class="load-more" id='load-more-id' v-on:click="addItems()">View More</a>
+                    </div>
+                    <div class="coincap">
+                        <a class="coincap" target="_blank" href="https://coincap.io/" >coincap.io</a>
+                    </div>
                 </footer>
         </div>
         

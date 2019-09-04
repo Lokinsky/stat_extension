@@ -1,26 +1,25 @@
 @import url('https://fonts.googleapis.com/css?family=Old+Standard+TT&display=swap');
-
+@import url('https://fonts.googleapis.com/css?family=Titillium+Web&display=swap');
 table{
     background-color: transparent;
-    width:450px; 
+    width:475px; 
     height:500px;
     padding: 0px;
-    
- 
+    overflow: auto;
 }
+html{
+    overflow: hidden;
+    border: 1px solid;
 
-
+}
 body{
     margin: 0px;
-    border: 1px solid;
-    background-image: url('./back-pick.jpg');
-    font-family: 'Old Standard TT', serif;
-
+    padding: 0px;
+    font-family: 'Titillium Web', sans-serif;
+    background-image: url('./back-pick.png');
 }
 table>thead{
-
-   
-    
+    background-color: rgba(0, 0, 0, 0.144);
     box-shadow: 0 0 0 3px rgba(0,0,0,3%);
     border-radius: 10px;
 }
@@ -28,11 +27,7 @@ th{
     color:black;
     font-size: 18pt;
     text-align: right;
-   
-
     padding: 10px;
-    
-    
 }
 td.price{
     text-align: right;
@@ -42,29 +37,33 @@ td.price{
     width: 25px;
     height: 25px;
 }
- 
 div.chartsPrice{
     font-size: 14pt;
-    padding-bottom: 25%;
-    margin: 5%;
-
+    padding: 5%;
 }
 div.item-info{
+    margin: 0px 10px;
+    display:inline-block;
+    width: 100%;
+}
+div.item-price-left{
     float: left;
-    
-
 }
-div.item-price{
+div.item-price-right{
     float: right;
-    margin-top: 10%;
-    
 }
-.chartsPrice-item{
-
-    float: top;
-    text-align: right;
+div.chartsPrice span{
+    margin: 0px 10px;
+}
+.left{
+    float: left;
     margin: 0px;
-
+    padding: 10px;
+}
+.right{
+    float: right;
+    margin: 0px;
+    padding: 10px;
 }
 
 td.BitName{
@@ -84,45 +83,32 @@ tr.charts:hover{
     cursor: auto;
     background-color: rgba(252, 249, 249, 0.2);  
     border-radius: 10px;
-    box-shadow: 0 0 0 1px rgba(0,0,0,3%);
-
-
+    box-shadow: 0 0 0 2px rgba(0,0,0,3%);
 }
 div.item-info>img{
     float: left; 
     padding: 0px;
     margin: 0px;
-
 }
 div.item-info>h2{
-    float: left; 
     margin: 0px;
-    padding: 0px;
-
-    padding-left: 20px;
-
+    display: inline-block;
+    width: 70%;
 }
 div.item-info>h4{
-    float: bottom;
-    text-align: right; 
-    padding: 0px;
-
+    text-align: left; 
+    display:inline-block;
     margin: 0px;
-
+    padding: 10px 0px 0px 4px;
+    width: 70%;
 }
 tr.table_head:hover{
     cursor: auto;
-  
-
-
 }
-
 tr>td>div.chartMoreInformation{
     font-size: 14pt;
     text-align: center;
     margin: 5%;
-
-    
 }
 tr>td>div.chartMoreInformation>a{
     text-decoration: none;
@@ -130,52 +116,56 @@ tr>td>div.chartMoreInformation>a{
     height: 150px;
     padding: 10px;
     margin-bottom: 10px;
+    color: white;
     background-color: rgba(70, 241, 135, 0.856);
     border: 1px solid rgba(86, 219, 137, 0.904);
     border-radius: 40px;
     box-shadow: 0 0 0 2px rgba(0,0,0,3%);
-   
-
 }
-
-
 tr:hover{
     background-color:transparent;
     font-size: 16pt;
     box-shadow: 0 0 0 5px rgba(0,0,0,3%);
     border: 1px solid;
     cursor: pointer;
-
-   
 }
 tr.rowItem:hover{
     background-color:transparent;
     font-size: 16pt;
-    box-shadow: 0 0 0 5px rgba(0,0,0,3%);
+    box-shadow: 0 0 0 3px rgba(1,0,0,3%);
     border: 1px solid;
     cursor: pointer;
 }
 footer{
     text-align: center;
-    margin: 15px;
-    padding: 10px;
+    margin: 15px 0px;
+    padding: 10px 0px 10px 0px;
+    display: inline-block;
+    width: 100%;
 }
-footer>a.load-more{
+div.load-more{
+    display: inline-block;
+    width: 100%;
+}
+footer>div.load-more>a{
     font-size: 16pt;
     text-decoration: none;
     padding: 10px;
     margin-bottom: 10px;
     background-color: rgba(70, 241, 135, 0.856);
     border: 1px solid rgba(86, 219, 137, 0.904);
+    color: white;
     border-radius: 40px;
-    box-shadow: 0 0 0 2px rgba(0,0,0,3%);
-    
-    
+    box-shadow: 0 0 0 2px rgba(0,0,0,3%); 
 }
-footer>a.load-more:hover{
+footer>div.load-more>a:hover{
     cursor: pointer;
 }
-
+footer>div.coincap{
+    display: inline-block;
+    width: 100%;
+    margin: 10px 0px;
+}
 ::-webkit-scrollbar {
     width: 0px;  /* Remove scrollbar space */
     background: transparent;  /* Optional: just make scrollbar invisible */

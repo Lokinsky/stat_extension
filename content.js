@@ -2,7 +2,6 @@
 var app = new Vue({
     el: '#app',
     data: {
-        content: "",
         coinsData: JSON,
         nullabels:2,
         oldPrices:[],
@@ -10,31 +9,36 @@ var app = new Vue({
         counter:0,
         minPriceChart:0,
         maxPriceChart:0,
-        itemCount:15
+        itemCount:15,
+        error: false
     },
     updated(){
         //console.log(`Обновлено: ${Date() }`)
         this.counter++;
         //console.log(`Counter ${this.counter}`)
     },
+    errorCaptured:(err,vm,info)=>{
+
+        console.log('err')
+
+    },
 
     methods:{
-         toMoreInformation(id,idCanvas,name,symbol){
+         toMoreInformation(item){
 
-            console.log(`pressed ${id}, ${idCanvas}`)
-            var url = `https://api.coincap.io/v2/assets/${id}/history?interval=m5`;
+            console.log(`pressed ${item.id}, ${item.id}+Canvas`)
+            var url = `https://api.coincap.io/v2/assets/${item.id}/history?interval=m5`;
             settingsInfoItem.url = url;
             console.log(`ajax url: ${url}`)
-            
-            if(document.getElementById('chart row')!=null&&document.getElementById(id+"Canvas")==null){
+            if(document.getElementById('chart row')!=null&&document.getElementById(item.id+"Canvas")==null){
                 deleteEl('chart row')
 
             }
-            else if(document.getElementById('chart row')!=null&&document.getElementById(id+"Canvas")!=null){
+            else if(document.getElementById('chart row')!=null&&document.getElementById(item.id+"Canvas")!=null){
                 deleteEl('chart row')
                 return;
             }
-            if(document.getElementById('chart row')==null&&document.getElementById(id+"Canvas")==null){
+            if(document.getElementById('chart row')==null&&document.getElementById(item.id+"Canvas")==null){
                 
                 
                // var canvas = document.getElementById(idCanvas)
@@ -43,7 +47,7 @@ var app = new Vue({
                 $.ajax(settingsInfoItem).done(function (response) {
                     //console.log(`ajax,toMore and: ${url}`)
                     //console.log(response.data);
-                     getChart(id,response.data,name,symbol.toLowerCase())
+                     getChart(item,response.data)
                     
                 });
 
@@ -54,24 +58,29 @@ var app = new Vue({
             
         },
         addItems(){
-            this.itemCount+=25;
-            if(this.itemCount>=100){
+            this.itemCount+=50;
+            if(this.itemCount>=1500){
                 deleteEl('load-more-id');
             }
         },
-     UrlExists(url)
+      UrlExists(url)
         {
             var http = new XMLHttpRequest();
             http.open('HEAD', url, false);
             http.send();
-            return http.status!=404;
+            if(http.status!=404){
+                return url;
+            }else 
+                return './default.png' ;
         }
     }
 })
-var days = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"]
-var hours = ["s","Mon","Tue","Wed","Thu","Fri","Sat"]
+
+
+var months = ["January","February","March","April","May","June","Jule","August","September","October","November","December"]
+
 var settings = {
-    "url": "https://api.coincap.io/v2/assets",
+    "url": "https://api.coincap.io/v2/assets?limit=1500",
     "method": "GET",
     "timeout": 0,
 };
@@ -80,6 +89,8 @@ var settingsInfoItem = {
     "method": "GET",
     "timeout": 0,
   };
+
+
 
 setTimeout(HandlerSocket(),2500)
 function HandlerSocket(){
@@ -93,6 +104,17 @@ function HandlerSocket(){
 }
 
 
+var imgel = document.getElementById('iconpaxos-standard-token')
+
+
+function parseDate(date){
+    var day = new Date(date).getDay()
+    var month = months[parseInt(new Date(date).getMonth())]
+    var year = new Date(date).getFullYear()
+    day = parseInt(day)<10?'0'+day:day;
+    return `${day} ${month} ${year}`
+
+}
 function Comparator(coins,coinChecks){
     //console.log()
     for(var i = 0;i<coins.length;i++){
@@ -130,28 +152,40 @@ $.ajax(settings).done(function (response) {
     app.statisticsPrice = response.data
     //app.forceUpdate();
   });
+  $('img').on("error", function() {
+      console.log(this)
+    $(this).attr('src', '/default.png');
+  });
 
 
-
-function createEl(id,min,max,average,title,symbol){
+function createEl(item,min,max,average){
     var canvasComponent = Vue.extend({
         template:`<tr class='charts' id="chart row" style="height:0px;">
                     <td colspan="3" >
                         <div class="chartsPrice">
                             <div class="item-info">
-                                <img src='https://static.coincap.io/assets/icons/${symbol}@2x.png' width="64px" height="64px" >
-                                <h2 >${title}</h2>
-                                <h4 >${new Date().getDate()+'.'+(new Date().getMonth()+1)+"."+new Date().getFullYear()}</h4>
+                                <img src='https://static.coincap.io/assets/icons/${item.symbol.toLowerCase()}@2x.png' width="64px" height="64px" >
+                                <h2 >${item.name}</h2>
+                                <h4 >${parseDate(new Date().valueOf())}</h4>
                             </div>
-                            <div class="item-price">
-                                <h5 class="chartsPrice-item"><span style="color:grey;">HIGH </span>$${max}</h5>
-                                <h5 class="chartsPrice-item"><span style="color:grey;">LOW </span>$${min}</h5>
-                                <h5 class="chartsPrice-item"><span style="color:grey;">AVERAGE </span>$${average}</h5>
+                            <div class="item-price-left">
+                                <div class="left">
+                                    <h5 class="chartsPrice-left" ><span style="color:grey;">HIGH </span>$${max}</h5>
+                                    <h5 class="chartsPrice-left" ><span style="color:grey;">LOW </span>$${min}</h5>
+
+                                </div>
+                            </div>
+                            <div class="item-price-right">
+                                <div class="right">
+                                     <h5 class="chartsPrice-right" ><span style="color:grey;">AVERAGE </span>$${average}</h5>
+
+                                    <h5 class="chartsPrice-right" ><span style="color:grey;">CHANGE </span>${parseFloat(item.changePercent24Hr).toFixed(2)}%</h5>
+                                </div>
                             </div>
                         </div>
-                        <canvas id='${id}Canvas' > </canvas>
+                        <canvas id='${item.id}Canvas' > </canvas>
                         <div class="chartMoreInformation">
-                        <a  href="https://coincap.io/assets/${id}" target="_blank" >More Details</a>
+                        <a  href="https://coincap.io/assets/${item.id}" target="_blank" >More Details</a>
                         </div>
                     </td>
 
@@ -159,7 +193,7 @@ function createEl(id,min,max,average,title,symbol){
     })
     var canvasEl = new canvasComponent().$mount()
     console.log(canvasEl.$el);
-    document.getElementById(id).insertAdjacentElement('afterend',canvasEl.$el)
+    document.getElementById(item.id).insertAdjacentElement('afterend',canvasEl.$el)
 }
 function deleteEl(id){
     document.getElementById(id).remove()
@@ -195,7 +229,7 @@ function Sum(arr){
 }
 var myChart = new Chart()
 
- function getChart(id,data,name,symbol){
+ function getChart(item,data){
     console.log("executing..")
     
         var timePrice = getTimeMoney(data)
@@ -209,25 +243,25 @@ var myChart = new Chart()
         var average = (parseFloat(sum/timePrice[1].length).toFixed(app.nullabels)).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
         console.log(sum)
         //console.log(minPrice)
-         createEl(id,minPrice,maxPrice,average,name,symbol)
+         createEl(item,minPrice,maxPrice,average)
 
 
         console.log(timePrice)
-        var ctx = document.getElementById(id+'Canvas').getContext('2d');
+        var ctx = document.getElementById(item.id+'Canvas').getContext('2d');
         if(ctx!=null&&data!=null){
         new Chart(ctx, {
             type: 'line',
             data: {
                 labels: timePrice[0],
                 datasets: [{
-                    label: `${name}`,
+                    label: `${item.name}`,
                     data:timePrice[1],
-                    backgroundColor:'rgb(111, 227, 156)',
-                    borderColor:'rgb(17, 191, 84)',
+                    backgroundColor:parseFloat(item.changePercent24Hr)>0?'rgba(111, 227, 156,30%)':'rgba(255, 53, 63,40%)',
+                    borderColor:parseFloat(item.changePercent24Hr)>0?'rgb(17, 191, 84)':'rgb(255, 53, 63)',
                     borderWidth: 2,
                     pointRadius:0,
-                    pointHitRadius:1,
-                    pointHoverRadius:1,
+                    pointHitRadius:1.5,
+                    pointHoverRadius:1.5,
                     lineTension:0
                 }]
             },
