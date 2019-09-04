@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html  >
+    
+    <head>
+            <script src="/vue.js"></script>
+            <script src="/jQuery.js"></script>
+            <script src="./Chart.js"></script>
+            <link href="style.css" rel="stylesheet">
+            <meta charset="utf-8">
+    </head>
+    <body class="body_content">
+            
+        <div id="app" >
+        
+                
+                
+
+                <table class="table" id="tableItems" cellspacing="0">
+                    <thead >
+                            
+                        <tr class="table_head">
+                            <th class="th" style="text-align: left;">Rank</th>
+                            <th class="th" style="text-align: left;" >Name</th>
+                            <th class="th">Price ($)</th>
+                        </tr>
+                    </thead>
+                    
+                    <tr class="rowItem" :id="item.id" v-on:click="toMoreInformation(item.id,item.id+'Canvas',item.name,item.symbol)" v-for="(item,index) in coinsData" v-if="itemCount>index" >
+                        <td class="idBit">{{index+1}} </td> 
+                        <td class="BitName" id="trItem">
+                                <img class="icon" :src="'https://static.coincap.io/assets/icons/'+item.symbol.toLowerCase()+'@2x.png'"> {{item.name}} 
+                        </td> 
+                        
+                        <td colspan="4" class="price"> $ {{(parseFloat(item.priceUsd).toFixed(nullabels)).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,")}}</td>
+                    </tr>
+                    
+
+                    
+                    
+                </table>
+                <footer>
+                    <a class="load-more" id='load-more-id' v-on:click="addItems()">View More</a>
+                    <br><a target="_blank" href="https://coincap.io/" >coincap.io</a>
+                    
+                </footer>
+        </div>
+        
+        <script src="/content.js"></script>
+    </body>
+    
+
+</html>
