@@ -1,4 +1,4 @@
-# Chrome extension for monitoring any changes in bitcoin-world.
+# Chrome extension for monitoring any changes in bitcoin segment.
 It`s got a following functions:
 1) Display the basic information about any different cryptocoins;
 2) Provides more detailed info such as diagrams, low and high prices, average, offset for 24 hours.
